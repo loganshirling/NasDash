@@ -1,0 +1,276 @@
+/* --- Dark recessed steel pocket that holds a clear plastic button ------- */
+.vending-slot {
+  min-width: 0;
+  position: relative;
+  padding: 12px 13px 18px;
+  border: 1px solid #080b10;
+  border-radius: 13px;
+  background: linear-gradient(155deg, #080b0f 5%, #151a22 55%, #252c35 100%);
+  box-shadow: inset 0 4px 13px #000, inset 0 -2px 2px #8b98a01a, 0 1px 0 #75839342;
+}
+.slot-screw {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  bottom: 5px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #9da9b5 0%, #687380 24%, #121820 73%);
+  box-shadow: 0 0 0 1px #000;
+}
+.slot-screw--left { left: 8px; }
+.slot-screw--right { right: 8px; }
+
+.vending-button {
+  position: relative;
+  display: block;
+  height: 112px;
+  border-radius: 9px;
+  overflow: hidden;
+  text-decoration: none;
+  color: #e9f1f6;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  cursor: pointer;
+  border: 2px solid #788494;
+  background: #111a25;
+  transform: translateY(0) scale(1);
+  box-shadow:
+    0 7px 0 #05070a,
+    0 11px 11px #000b,
+    inset 0 0 0 3px #b4c2ce24,
+    inset 0 4px 2px #fff4;
+  transition: transform 130ms ease, box-shadow 130ms ease, border-color 250ms ease;
+}
+.vending-button--pressed, .vending-button:active {
+  transform: translateY(6px) scale(.987);
+  box-shadow: 0 1px 0 #05070a, 0 2px 5px #0009, inset 0 2px 7px #000a;
+}
+.vending-button:focus-visible { outline: 2px solid #b5ffda; outline-offset: 3px; }
+
+/* --- Colorful paper/logo insert behind the translucent plastic ---------- */
+.vending-insert {
+  position: absolute;
+  inset: 4px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 12px;
+  border-radius: 5px;
+  background: linear-gradient(145deg, #182129, #0e141b 68%, #18232d);
+  box-shadow: inset 0 0 0 1px #8395a322, inset 0 0 22px #000b;
+  filter: saturate(.48) brightness(.6);
+  transition: filter 300ms, background 300ms, box-shadow 300ms;
+}
+.vending-button--responding .vending-insert {
+  filter: saturate(1) brightness(1);
+  background:
+    radial-gradient(ellipse at 35% 45%, color-mix(in srgb, var(--accent) 30%, #162331), #17222e 72%),
+    #182531;
+  box-shadow: inset 0 0 0 1px #ffffff42, inset 0 0 19px color-mix(in srgb, var(--accent) 22%, transparent);
+}
+.vending-button--checking .vending-insert { filter: saturate(.3) brightness(.8); }
+.service-emblem {
+  display: grid;
+  flex: 0 0 57px;
+  width: 57px;
+  height: 57px;
+  place-items: center;
+  border-radius: 9px;
+  color: var(--accent);
+  background: #06101caa;
+  border: 1px solid #ffffff32;
+  box-shadow: inset 0 2px 8px #0008, 0 0 17px color-mix(in srgb, var(--accent) 17%, transparent);
+}
+.service-copy { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.service-copy strong { display: block; font-size: clamp(14px, 1.8vw, 20px); font-weight: 800; letter-spacing: -.35px; line-height: 1.1; }
+.service-copy small { display: block; font-size: 9px; font-weight: 700; letter-spacing: 1.5px; color: #c5d1de; }
+.service-status { position: absolute; right: 10px; bottom: 11px; width: 6px; height: 6px; border-radius: 50%; background: #4c5360; }
+.vending-button--responding .service-status { background: #b7fcd3; box-shadow: 0 0 8px 2px #5df4a86b; }
+.vending-button--checking .service-status { background: #f5c17c; }
+
+/* --- The acrylic cover: bright rim, reflected strip and surface sheen --- */
+.vending-plastic, .vending-reflection { position: absolute; inset: 0; border-radius: 7px; pointer-events: none; }
+.vending-plastic {
+  background: linear-gradient(145deg, #fff6 0%, #ffffff0a 21%, transparent 38%, #0b121f30 69%, #fff3 99%);
+  border: 3px solid #ffffff30;
+  box-shadow: inset 0 3px 1px #fff8, inset 4px 0 4px #d7e7f12e, inset -4px -6px 6px #000a;
+}
+.vending-reflection {
+  inset: 6px 8px auto;
+  height: 24px;
+  transform: skewX(-7deg);
+  background: linear-gradient(to bottom, #ffffff36, #ffffff0c, transparent);
+  opacity: .8;
+}
+.vending-button:hover .vending-plastic { border-color: #ffffff55; }
+
+@media (max-width: 600px) {
+  .vending-button { height: 103px; }
+  .service-copy strong { font-size: 20px; }
+}
+
+
+/* ==========================================================
+   BACKLIT VENDING BUTTONS
+   Simulates an LED light source behind the acrylic cover.
+   ========================================================== */
+
+/* Establish the layers inside each button. */
+.vending-insert {
+  isolation: isolate;
+  overflow: hidden;
+}
+
+/* Diffused light behind the entire insert. */
+.vending-insert::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  z-index: 0;
+  pointer-events: none;
+
+  background: radial-gradient(
+    ellipse at 35% 50%,
+    color-mix(in srgb, var(--accent) 65%, transparent) 0%,
+    color-mix(in srgb, var(--accent) 25%, transparent) 35%,
+    transparent 75%
+  );
+
+  filter: blur(18px);
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+
+/* Keep the SVG and text above the light source. */
+.service-emblem,
+.service-copy,
+.service-status {
+  z-index: 1;
+}
+
+.service-emblem,
+.service-copy {
+  position: relative;
+}
+
+/* The SVG itself. */
+.service-emblem svg {
+  position: relative;
+  z-index: 1;
+  width: 48px;
+  height: 48px;
+
+  color: #78818d;
+  opacity: 0.65;
+
+  transition:
+    color 350ms ease,
+    opacity 350ms ease,
+    filter 350ms ease;
+}
+
+/* A soft LED halo directly behind the SVG. */
+.service-emblem::before {
+  content: "";
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+
+  background: radial-gradient(
+    circle,
+    var(--accent) 0%,
+    transparent 70%
+  );
+
+  filter: blur(14px);
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+
+/* ==========================================================
+   ACTIVE — Container responds
+   ========================================================== */
+
+.vending-button--responding .vending-insert::before {
+  opacity: 0.85;
+}
+
+.vending-button--responding .service-emblem::before {
+  opacity: 0.65;
+}
+
+.vending-button--responding .service-emblem svg {
+  color: #ffffff;
+  opacity: 1;
+
+  /* Multiple shadows create a realistic light bloom. */
+  filter:
+    drop-shadow(0 0 3px var(--accent))
+    drop-shadow(0 0 9px var(--accent))
+    drop-shadow(0 0 18px var(--accent));
+}
+
+/* Light bleeding into the acrylic edges. */
+.vending-button--responding .vending-plastic {
+  border-color: color-mix(
+    in srgb,
+    var(--accent) 35%,
+    #ffffff55
+  );
+
+  box-shadow:
+    inset 0 3px 1px #ffffff88,
+    inset 0 0 15px color-mix(
+      in srgb,
+      var(--accent) 30%,
+      transparent
+    ),
+    inset -4px -6px 6px #0008;
+}
+
+/* ==========================================================
+   INACTIVE / UNVERIFIED — Light off
+   ========================================================== */
+
+.vending-button--unverified .vending-insert {
+  filter: saturate(0.15) brightness(0.38);
+}
+
+.vending-button--unverified .service-emblem svg {
+  color: #78818d;
+  opacity: 0.5;
+}
+
+
+
+/* Custom SVG artwork inside the plastic button */
+.vending-insert {
+  position: relative;
+}
+
+.service-artwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 6px;
+  box-sizing: border-box;
+  object-fit: contain;
+  z-index: 1;
+
+  transition: filter 350ms ease;
+}
+
+/* Illuminated artwork */
+.vending-button--responding .service-artwork {
+  filter:
+    brightness(1.15)
+    drop-shadow(0 0 6px var(--accent))
+    drop-shadow(0 0 14px var(--accent));
+}
+
+/* Unverified artwork */
+.vending-button--unverified .service-artwork {
+  filter: brightness(0.3) saturate(0.3);
+}
